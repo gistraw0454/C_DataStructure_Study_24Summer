@@ -4,13 +4,13 @@
 #define TRUE 1
 #define FALSE 0
 
-#define NONBLOCKED 0	// ¶Õ¸° ±æ
-#define BLOCKED 1		// º®
-#define PATH 2			// ¸Â´Â ±æ
-#define VISITED 3		// ¹æ¹®ÇÔ
+#define NONBLOCKED 0	// ëš«ë¦° ê¸¸
+#define BLOCKED 1		// ë²½
+#define PATH 2			// ë§ëŠ” ê¸¸
+#define VISITED 3		// ë°©ë¬¸í•¨
 
-#define WIDTH 8			// ¹Ì·ÎÀÇ ³Êºñ
-#define HEIGHT 8		// ¹Ì·ÎÀÇ ³ôÀÌ
+#define WIDTH 8			// ë¯¸ë¡œì˜ ë„ˆë¹„
+#define HEIGHT 8		// ë¯¸ë¡œì˜ ë†’ì´
 
 
 int maze[WIDTH][HEIGHT] = {
@@ -39,60 +39,60 @@ void trace() {
 	for (i = 0; i < HEIGHT; ++i) {
 		for (j = 0; j < WIDTH; ++j) {
 			if (maze[i][j] == BLOCKED) {
-				printf("¡á");
+				printf("â– ");
 			}
 			else if (maze[i][j] == PATH) {
-				printf("¡Ù");
+				printf("â˜†");
 			}
 			else {
-				printf("¡à");
+				printf("â–¡");
 			}
 		}
 		printf("\n");
 	}
 }
 
-// µµÂøÁö¿¡ Á¦´ë·Î µµÂøÇß´Ù¸é --> TRUE (1)
-// ¾ÆÁ÷ µµÂøÁö°¡ ¾Æ´Ñ Ä­ÀÌ¶ó¸é --> FALSE (0)
+// ë„ì°©ì§€ì— ì œëŒ€ë¡œ ë„ì°©í–ˆë‹¤ë©´ --> TRUE (1)
+// ì•„ì§ ë„ì°©ì§€ê°€ ì•„ë‹Œ ì¹¸ì´ë¼ë©´ --> FALSE (0)
 int push(int r, int c) {
 	
-	// ÀÌ¹Ì ¹æ¹®Çß´ø Ä­ÀÌ´Ï?
+	// ì´ë¯¸ ë°©ë¬¸í–ˆë˜ ì¹¸ì´ë‹ˆ?
 	if (visited[r][c] == VISITED) {
 		return FALSE;
 	}
 
-	// ¹æ¹®ÇßÀ½À» Ç¥½Ã
+	// ë°©ë¬¸í–ˆìŒì„ í‘œì‹œ
 	visited[r][c] = VISITED;
 	
-	// º®ÀÌ´Ï?
+	// ë²½ì´ë‹ˆ?
 	if (maze[r][c] == BLOCKED) {
 		return FALSE;
 	}
 
 
 
-	int tmp = maze[r][c];  // ÇöÀç Ä­ÀÇ ¿ø·¡ µ¥ÀÌÅÍ º¸°ü
-	maze[r][c] = PATH; // ÀÏ´Ü '°æ·Î'ÀÓÀ» Ç¥½Ã
+	int tmp = maze[r][c];  // í˜„ì¬ ì¹¸ì˜ ì›ë˜ ë°ì´í„° ë³´ê´€
+	maze[r][c] = PATH; // ì¼ë‹¨ 'ê²½ë¡œ'ì„ì„ í‘œì‹œ
 
-	// µµÂøÁö¿¡ µµÂøÇß´Ï?
+	// ë„ì°©ì§€ì— ë„ì°©í–ˆë‹ˆ?
 	if (r == GOAL_ROW && c == GOAL_COL) {
 		return TRUE;
 	}
 
 
-	// ¿ŞÂÊ Ä­À¸·Î  push() Àç½ÇÇà(Àç±ÍÈ£Ãâ)
+	// ì™¼ìª½ ì¹¸ìœ¼ë¡œ  push() ì¬ì‹¤í–‰(ì¬ê·€í˜¸ì¶œ)
 	if (c > 0 && push(r, c - 1)) {
 		return TRUE;
 	}
-	// À­ÂÊ Ä­À¸·Î  push() Àç½ÇÇà(Àç±ÍÈ£Ãâ)
+	// ìœ—ìª½ ì¹¸ìœ¼ë¡œ  push() ì¬ì‹¤í–‰(ì¬ê·€í˜¸ì¶œ)
 	if (r > 0 && push(r - 1, c)) {
 		return TRUE;
 	}
-	// ¿À¸¥ÂÊ Ä­À¸·Î  push() Àç½ÇÇà(Àç±ÍÈ£Ãâ)
+	// ì˜¤ë¥¸ìª½ ì¹¸ìœ¼ë¡œ  push() ì¬ì‹¤í–‰(ì¬ê·€í˜¸ì¶œ)
 	if (c < WIDTH-1 && push(r, c + 1)) {
 		return TRUE;
 	}
-	// ¾Æ·§ÂÊ Ä­À¸·Î  push() Àç½ÇÇà(Àç±ÍÈ£Ãâ)
+	// ì•„ë«ìª½ ì¹¸ìœ¼ë¡œ  push() ì¬ì‹¤í–‰(ì¬ê·€í˜¸ì¶œ)
 	if (r < HEIGHT-1 && push(r + 1, c)) {
 		return TRUE;
 	}
